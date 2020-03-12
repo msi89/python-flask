@@ -4,7 +4,8 @@
 
 ```bash
 cp .env.example .env
-flask create_database && flask create_user
+flask migrate # create sqlite database
+flask createautousers # create examples users(optional)
 ```
 
 - run app

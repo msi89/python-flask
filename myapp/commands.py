@@ -10,7 +10,7 @@ def create_database():
     db.create_all()
 
 
-@click.command(name='create_users')
+@click.command(name='createautousers')
 @with_appcontext
 def create_users():
     one = User(username='One', password=guard.hash_password('one'))
