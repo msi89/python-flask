@@ -1,4 +1,4 @@
-from myapp.settings import serializer
+from core.extensions import serializer
 
 
 class PostSerialiser(serializer.Schema):

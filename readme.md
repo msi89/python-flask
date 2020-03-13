@@ -19,7 +19,7 @@ flask run
 - show
 
 ```bash
-sqlite3 myapp/db.sqlite3
+sqlite3 core/db.sqlite3
 .tables
 .schema
 .exit

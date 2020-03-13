@@ -1,4 +1,4 @@
-from myapp.settings import db
+from core.extensions import db
 
 
 class User(db.Model):
