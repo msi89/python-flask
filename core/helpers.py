@@ -1,4 +1,7 @@
 import os
+import json
+from flask import abort, Response
+from flask_sqlalchemy import BaseQuery
 
 
 def create_folder():
@@ -26,3 +29,20 @@ def create_files(filenames):
             open(filename, 'w')
         else:
             print('{0} already exists in this project'.format(filename))
+
+
+class CustomBaseQuery(BaseQuery):
+    def get_or_404(self, ident):
+        model_class_name = ''
+        try:
+            model_class_name = self._mapper_zero().class_.__name__
+        except Exception as e:
+            print(e)
+
+        rv = self.get(ident)
+        if not rv:
+            error_message = json.dumps(
+                {'message': model_class_name + ' ' +
+                 str(ident) + ' not found'})
+            abort(Response(error_message, 404))
+        return rv
