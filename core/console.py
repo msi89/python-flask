@@ -16,13 +16,26 @@ def create_database():
 @click.command(name='startapp')
 @with_appcontext
 def start_application():
-    app_name = create_folder()
+    root = os.getcwd()
+    app_name = input("Enter app name: ")
+    app_path = os.path.join(root, app_name.lower())
+
+    static = input('Would you generate static folder?(y/N)')
+    template = input('Would you generate templates folder?(y/N)')
+
+    create_folder(app_path)
+
+    if static.lower() == 'y':
+        create_folder(os.path.join(app_path, 'static'))
+    if template.lower() == 'y':
+        create_folder(os.path.join(app_path, 'templates'))
+
     create_files([
-        os.path.join(app_name, '__init__.py'),
-        os.path.join(app_name, 'models.py'),
-        os.path.join(app_name, 'routes.py'),
-        os.path.join(app_name, 'serializers.py'),
-        os.path.join(app_name, 'seeders.py'),
+        os.path.join(app_path, '__init__.py'),
+        os.path.join(app_path, 'models.py'),
+        os.path.join(app_path, 'routes.py'),
+        os.path.join(app_path, 'serializers.py'),
+        os.path.join(app_path, 'seeders.py'),
     ])
 
 

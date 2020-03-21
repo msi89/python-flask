@@ -1,10 +1,18 @@
 from flask import Blueprint, jsonify, request, Response
 from flask_praetorian import auth_required
+from werkzeug.exceptions import BadRequest
 from .models import Post
 from core.extensions import db
 from .serializers import PostSerialiser
 
+
 api = Blueprint('blog', __name__)
+@api.errorhandler(BadRequest)
+def handle_bad_request(e):
+    return 'bad request! {}'.format(e.description), 400
+
+
+api.register_error_handler(400, handle_bad_request)
 post_serializer = PostSerialiser()
 posts_serializer = PostSerialiser(many=True)
 
@@ -20,6 +28,10 @@ def get_all_posts():
 @auth_required
 def create_post():
     data = request.get_json()
+    errors = post_serializer.validate(data)
+    if errors:
+        return jsonify(errors), 400
+
     post = Post(title=data['title'], body=data['body'])
     db.session.add(post)
     db.session.commit()
@@ -31,6 +43,10 @@ def create_post():
 def update_post(id):
     post = Post.query.get_or_404(id)
     data = request.get_json()
+    errors = post_serializer.validate(data)
+    if errors:
+        return jsonify(errors), 400
+
     post.title = data['title']
     post.body = data['body']
     db.session.commit()

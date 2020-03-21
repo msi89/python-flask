@@ -12,8 +12,7 @@ from accounts.routes import api as accounts_routes
 def create_app():
     app = Flask(__name__)
     app. config['SECRET_KEY'] = environ.get('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-        'SQLALCHEMY_DATABASE_URI')
+    app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
     app.config['JWT_ACCESS_LIFESPAN'] = {'months': 1}
 
     db.init_app(app)
@@ -30,3 +29,15 @@ def create_app():
     app.register_blueprint(products_routes, url_prefix='/api/products')
 
     return app
+
+
+def get_database_uri():
+    driver = environ.get('DB_DRIVER')
+    if driver.lower() == 'pgsql':
+        URL = environ.get('POSTGRES_URL')
+        USER = environ.get('POSTGRES_URL')
+        PWD = environ.get('POSTGRES_URL')
+        DB = environ.get('POSTGRES_URL')
+        return 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
+            user=USER, pw=PWD, url=URL, db=DB)
+    return environ.get('SQLITE')

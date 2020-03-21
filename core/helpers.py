@@ -4,16 +4,17 @@ from flask import abort, Response
 from flask_sqlalchemy import BaseQuery
 
 
-def create_folder():
-    root = os.getcwd()
-    app_name = input("Enter app name: ")
-    app_path = os.path.join(root, app_name)
-    if not os.path.exists(app_path):
-        os.mkdir(app_path)
-        return app_name
+def create_folder(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
     else:
-        print('{0} already exists in this project'.format(app_name))
-        return None
+        print('{0} already exists in this project'.format(path))
+
+
+def create_folders(paths):
+    for path in paths:
+        if not os.path.exists(path):
+            os.mkdir(path)
 
 
 def create_file(filename):
