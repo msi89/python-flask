@@ -7,4 +7,5 @@ node_modules/
 staticfiles/
 .DS_Store
 .env
+venv
 db.sqlite3

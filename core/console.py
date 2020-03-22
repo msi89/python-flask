@@ -10,7 +10,11 @@ from products.seeders import create_categories_seeder, create_products_seeder
 @click.command(name='migrate')
 @with_appcontext
 def create_database():
-    db.create_all()
+    try:
+       db.create_all()
+       print("database successfully migrated")
+    except Exception as e:
+        print(e)
 
 
 @click.command(name='startapp')
@@ -37,6 +41,20 @@ def start_application():
         os.path.join(app_path, 'serializers.py'),
         os.path.join(app_path, 'seeders.py'),
     ])
+
+    try:
+        with open(os.path.join(app_path, 'routes.py'), "a") as f:
+            f.write("from flask import Blueprint, jsonify\n")
+            f.write('\n')
+            f.write(
+                "app = Blueprint('{}', __name__)\n\n".format(app_name.lower()))
+            f.write('')
+            f.write('@app.route(\'/\')\n')
+            f.write('def index():\n')
+            f.write('\treturn jsonify({\'data\': \'Hello world\'})\n')
+            f.close()
+    except Exception as e:
+        print(e)
 
 
 @click.command(name='seed')

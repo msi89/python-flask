@@ -11,7 +11,9 @@ from accounts.routes import api as accounts_routes
 
 def create_app():
     app = Flask(__name__)
-    app. config['SECRET_KEY'] = environ.get('SECRET_KEY')
+    app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = environ.get(
+        'SQLALCHEMY_TRACK_MODIFICATIONS')
     app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
     app.config['JWT_ACCESS_LIFESPAN'] = {'months': 1}
 
@@ -34,10 +36,12 @@ def create_app():
 def get_database_uri():
     driver = environ.get('DB_DRIVER')
     if driver.lower() == 'pgsql':
-        URL = environ.get('POSTGRES_URL')
-        USER = environ.get('POSTGRES_URL')
-        PWD = environ.get('POSTGRES_URL')
-        DB = environ.get('POSTGRES_URL')
-        return 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
-            user=USER, pw=PWD, url=URL, db=DB)
+        uri = 'postgresql+psycopg2://{0}:{1}@{2}/{3}'.format(
+            environ.get('POSTGRES_USER'),
+            environ.get('POSTGRES_PWD'),
+            environ.get('POSTGRES_URL'),
+            environ.get('POSTGRES_DB')
+        )
+        print('=== URI DB ===', uri)
+        return uri
     return environ.get('SQLITE')

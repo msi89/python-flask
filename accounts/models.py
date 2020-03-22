@@ -3,12 +3,16 @@ from core.extensions import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50))
+    email = db.Column(db.String(50))
     password = db.Column(db.Text)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(),
+        server_onupdate=db.func.now())
 
     @classmethod
-    def lookup(cls, username):
-        return cls.query.filter_by(username=username).one_or_none()
+    def lookup(cls, email):
+        return cls.query.filter_by(email=email).one_or_none()
 
     @classmethod
     def identify(cls, id):
