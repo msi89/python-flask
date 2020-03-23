@@ -1,4 +1,4 @@
-from core.extensions import db
+from core.exts import db
 from .models import Post
 
 

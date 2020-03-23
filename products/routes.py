@@ -1,8 +1,8 @@
-from flask import Blueprint
-
+from flask import Blueprint, jsonify
+from .models import Product, Category
 api = Blueprint('products', __name__)
 
 
 @api.route('/')
-def test():
-    return {'sjhg': 'products'}
+def index():
+	return jsonify({'data': 'Hello world'})

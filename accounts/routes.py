@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_praetorian import auth_required
-from core.extensions import guard, db
+from core.exts import guard, db
 from .serializers import UserSerializer
 from .models import User
 

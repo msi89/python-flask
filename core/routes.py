@@ -4,5 +4,5 @@ api = Blueprint('default', __name__)
 
 
 @api.route('/test')
-def open():
+def index():
     return jsonify({'result': 'Hello'})

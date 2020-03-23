@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, Response
 from flask_praetorian import auth_required
 from werkzeug.exceptions import BadRequest
 from .models import Post
-from core.extensions import db
+from core.exts import db
 from .serializers import PostSerialiser
 
 

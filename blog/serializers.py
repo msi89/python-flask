@@ -1,4 +1,4 @@
-from core.extensions import serializer
+from core.exts import serializer
 
 
 class PostSerialiser(serializer.Schema):

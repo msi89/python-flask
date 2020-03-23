@@ -1,4 +1,13 @@
-from core.extensions import db
+from core.exts import db
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(length=None), unique=True, nullable=False)
+    created_on = db.Column(db.DateTime(), server_default=db.func.now())
+    updated_on = db.Column(
+        db.DateTime, server_default=db.func.now(),
+        server_onupdate=db.func.now())
 
 
 class Product(db.Model):
@@ -19,11 +28,3 @@ class Product(db.Model):
         return {'id': self.id, 'name': self.name, 'slug': self.slug,
                 'details': self.details}
 
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=None), unique=True, nullable=False)
-    created_on = db.Column(db.DateTime, server_default=db.func.now())
-    updated_on = db.Column(
-        db.DateTime, server_default=db.func.now(),
-        server_onupdate=db.func.now())

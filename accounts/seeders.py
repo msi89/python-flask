@@ -1,5 +1,5 @@
 from .models import User
-from core.extensions import guard, db
+from core.exts import guard, db
 
 
 def create_users_eeder():

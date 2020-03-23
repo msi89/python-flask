@@ -1,5 +1,5 @@
 from datetime import datetime
-from core.extensions import db
+from core.exts import db
 
 
 class Post(db.Model):
@@ -11,3 +11,4 @@ class Post(db.Model):
     def serialize(self):
         return {'id': self.id, 'title': self.title, 'body': self.body,
                 'created_at': self.created_at}
+

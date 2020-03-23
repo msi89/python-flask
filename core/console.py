@@ -1,23 +1,33 @@
 import click
 import os
 from flask.cli import with_appcontext
-from .extensions import db
+from .exts import db
 from .helpers import create_folder, create_files
 from blog.seeders import create_posts_seeder
-from products.seeders import create_categories_seeder, create_products_seeder
 
 
-@click.command(name='migrate')
+@click.command(name='db:migrate')
 @with_appcontext
-def create_database():
+def migrate_database():
     try:
-       db.create_all()
-       print("database successfully migrated")
+        db.create_all()
+        db.session.commit()
+        print("database successfully migrated")
     except Exception as e:
         print(e)
 
 
-@click.command(name='startapp')
+@click.command(name='db:rollback')
+@with_appcontext
+def rollback_migration():
+    try:
+        db.drop_all()
+        print("all tables successfully dropped")
+    except Exception as e:
+        print(e)
+
+
+@click.command(name='make:module')
 @with_appcontext
 def start_application():
     root = os.getcwd()
@@ -47,7 +57,7 @@ def start_application():
             f.write("from flask import Blueprint, jsonify\n")
             f.write('\n')
             f.write(
-                "app = Blueprint('{}', __name__)\n\n".format(app_name.lower()))
+                "app = Blueprint('{}', __name__)\n\n\n".format(app_name.lower()))
             f.write('')
             f.write('@app.route(\'/\')\n')
             f.write('def index():\n')
@@ -60,6 +70,4 @@ def start_application():
 @click.command(name='seed')
 @with_appcontext
 def create_seeders():
-    create_categories_seeder()
-    create_products_seeder()
     create_posts_seeder()
