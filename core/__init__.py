@@ -43,4 +43,11 @@ def get_database_uri():
             environ.get('DB_HOST'),
             environ.get('DB_NAME')
         )
+    if driver.lower() == 'mysql':
+        return 'mysql://{0}:{1}@{2}/{3}'.format(
+            environ.get('DB_USER'),
+            environ.get('DB_PWD'),
+            environ.get('DB_HOST'),
+            environ.get('DB_NAME')
+        )
     return environ.get('SQLITE')

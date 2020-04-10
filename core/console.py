@@ -67,7 +67,7 @@ def start_application():
         print(e)
 
 
-@click.command(name='seed')
+@click.command(name='db:seed')
 @with_appcontext
 def create_seeders():
     create_posts_seeder()
