@@ -23,8 +23,3 @@ class Product(db.Model):
         server_onupdate=db.func.now())
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
     category = db.relationship('Category', backref=db.backref('products', lazy=True))
-
-    def serialize(self):
-        return {'id': self.id, 'name': self.name, 'slug': self.slug,
-                'details': self.details}
-

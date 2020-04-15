@@ -13,9 +13,9 @@ users_serializer = UserSerializer(many=True)
 @api.route('/login', methods=['POST'])
 def login():
     json_data = request.get_json()
-    username = json_data['username']
+    email = json_data['email']
     password = json_data['password']
-    user = guard.authenticate(username, password)
+    user = guard.authenticate(email, password)
     token = guard.encode_jwt_token(user)
     return jsonify({'meta': user_serializer.dump(user), 'access_token': token})
 
@@ -23,7 +23,7 @@ def login():
 @api.route('/register', methods=['POST'])
 def register():
     json_data = request.get_json()
-    user = User(username=json_data['username'], password=guard.hash_password(
+    user = User(email=json_data['email'], password=guard.hash_password(
         json_data['password']))
     db.session.add(user)
     db.session.commit()

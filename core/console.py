@@ -4,6 +4,8 @@ from flask.cli import with_appcontext
 from .exts import db
 from .helpers import create_folder, create_files
 from blog.seeders import create_posts_seeder
+from accounts.seeders import create_users_seeder
+from products.seeders import create_categories_seeder, create_products_seeder
 
 
 @click.command(name='db:migrate')
@@ -71,3 +73,6 @@ def start_application():
 @with_appcontext
 def create_seeders():
     create_posts_seeder()
+    create_users_seeder()
+    create_categories_seeder()
+    create_products_seeder()
