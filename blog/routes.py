@@ -7,12 +7,12 @@ from .serializers import serialize, validate
 
 
 api = Blueprint('blog', __name__)
-@api.errorhandler(BadRequest)
-def handle_bad_request(e):
-    return 'bad request! {}'.format(e.description), 400
+# @api.errorhandler(BadRequest)
+# def handle_bad_request(e):
+#     return 'bad request! {}'.format(e.description), 400
 
 
-api.register_error_handler(400, handle_bad_request)
+# api.register_error_handler(400, handle_bad_request)
 
 
 @api.route('/posts', methods=['GET'])

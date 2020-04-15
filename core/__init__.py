@@ -1,5 +1,9 @@
-from flask import Flask
+from flask import Flask, jsonify
 from os import environ
+
+from sqlalchemy.exc import OperationalError
+from werkzeug.exceptions import InternalServerError
+
 from .console import migrate_database, rollback_migration, start_application, create_seeders
 from .exts import db, guard, serializer
 from accounts.models import User
@@ -31,6 +35,22 @@ def create_app():
     app.register_blueprint(blog_routes, url_prefix='/api/blog')
     app.register_blueprint(products_routes, url_prefix='/api/products')
 
+    @app.errorhandler(InternalServerError)
+    def error500(e):
+        return set_error_message(e)
+
+    @app.errorhandler(404)
+    def error404(e):
+        return set_error_message(e)
+
+    @app.errorhandler(400)
+    def error400(e):
+        return set_error_message(e)
+
+    @app.errorhandler(401)
+    def error401(e):
+        return set_error_message(e)
+
     return app
 
 
@@ -51,3 +71,11 @@ def get_database_uri():
             environ.get('DB_NAME')
         )
     return environ.get('SQLITE')
+
+
+def set_error_message(error):
+    return jsonify({
+        "error": error.name,
+        "message": error.description,
+        "status_code": error.code
+    }), error.code

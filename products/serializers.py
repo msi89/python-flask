@@ -13,3 +13,11 @@ class ProductSerializer(serializer.Schema):
     id = fields.Int()
     name = fields.Str()
     category = fields.Nested('CategorySerializer', many=False)
+
+
+def serialize(data, many=False):
+    return ProductSerializer(many=many).dump(data)
+
+
+def validate(data):
+    return ProductSerializer().validate(data)
